@@ -1,6 +1,8 @@
 export type Item = { id: string; name: string; amount: number; date: string };
 export type Category = { id: string; name: string; items: Item[] };
-export type Budget = { start: string; end: string; opening: number; income: Item[]; categories: Category[]; goal: { name: string; amount: number; saved: number; target: string; perPayday: number } };
+export const investmentAccounts = ['TFSA', 'RRSP', 'Other Investments'] as const;
+export type Investment = { id: string; account: typeof investmentAccounts[number]; amount: number; date: string };
+export type Budget = { start: string; end: string; opening: number; investments?: Investment[]; income: Item[]; categories: Category[]; goal: { name: string; amount: number; saved: number; target: string; perPayday: number } };
 export type Log = { name: string; amount: number; date: string; detail: string };
 export const money = (n: number) => new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(n);
 export const cents = (n: number) => Math.round((Number.isFinite(n) ? n : 0) * 100);
@@ -10,17 +12,20 @@ export const sum = (items: {amount:number}[]) => items.reduce((n,i)=>n+cents(i.a
 export function analyse(b: Budget) {
  const income = b.income.filter(i=>inPeriod(b,i.date));
  const expenses = b.categories.flatMap(c=>c.items.map(i=>({...i,category:c.name}))).filter(i=>inPeriod(b,i.date));
+ const contributions = (b.investments||[]).filter(i=>inPeriod(b,i.date));
+ const investments = sum(contributions);
+ const investmentTotals = Object.fromEntries(investmentAccounts.map(account=>[account,sum(contributions.filter(i=>i.account===account))])) as Record<typeof investmentAccounts[number],number>;
  const paydays = [...new Set(income.filter(i=>i.amount>0).map(i=>i.date))].sort();
  const eligible = paydays.filter(d=>d<=b.goal.target);
  const remaining = Math.max(0,cents(b.goal.amount)-cents(b.goal.saved));
  const required = eligible.length ? Math.ceil(remaining/eligible.length)/100 : 0;
  let toSave = remaining;
  const deposits = eligible.map(date=>{const amount=Math.min(toSave,cents(b.goal.perPayday));toSave-=amount;return {date,amount:amount/100,name:'Set aside for '+b.goal.name,type:'Savings'};});
- const transactions = [...income.map(i=>({...i,type:'Payday'})),...expenses.map(i=>({...i,type:'Expense'})),...deposits].sort((a,b)=>a.date.localeCompare(b.date)||({Payday:0,Expense:1,Savings:2}[a.type as 'Payday'])-({Payday:0,Expense:1,Savings:2}[b.type as 'Payday']));
+ const transactions = [...income.map(i=>({...i,type:'Payday'})),...expenses.map(i=>({...i,type:'Expense'})),...deposits,...contributions.map(i=>({...i,name:i.account+' contribution',type:'Investment'}))].sort((a,b)=>a.date.localeCompare(b.date)||({Payday:0,Expense:1,Savings:2,Investment:3}[a.type as 'Payday'])-({Payday:0,Expense:1,Savings:2,Investment:3}[b.type as 'Payday']));
  let balance = cents(b.opening);
  const timeline=transactions.map(t=>{balance+=cents(t.amount)*(t.type==='Payday'?1:-1);return {...t,balance:balance/100,nextPayday:paydays.find(d=>d>t.date)};});
  const savings=sum(deposits), totalIncome=sum(income), totalExpenses=sum(expenses);
- return {income:totalIncome,expenses:totalExpenses,savings,left:balance/100,required,paydays,eligible,timeline,shortfall:timeline.find(t=>t.balance<0),lowest:Math.min(b.opening,...timeline.map(t=>t.balance)),goalGap:toSave/100,excluded:b.income.length+b.categories.flatMap(c=>c.items).length-income.length-expenses.length};
+ return {income:totalIncome,expenses:totalExpenses,savings,investments,investmentTotals,left:balance/100,required,paydays,eligible,timeline,shortfall:timeline.find(t=>t.balance<0),lowest:Math.min(b.opening,...timeline.map(t=>t.balance)),goalGap:toSave/100,excluded:(b.investments||[]).length-contributions.length+b.income.length+b.categories.flatMap(c=>c.items).length-income.length-expenses.length};
 }
 export function example(kind='job',today?:Date): Budget {
  const item=(name:string,amount:number,day:string)=>({id:uid(),name,amount,date:'2026-10-'+day});
