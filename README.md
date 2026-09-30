@@ -21,11 +21,13 @@ npm start        # serve the production build locally
 
 ## Using the app
 
-1. Edit the café-job example, choose allowance, or start with your own numbers. Set the period, starting cash, dated income, and category subexpenses.
-2. Set a savings goal and check cash flow. The example deliberately has an early shortfall despite a positive ending balance.
-3. Opening What if? or My changes captures the original plan once. Changes after this update only the revised budget.
-4. Try spending using the buffer, reduced savings, or cuts to another category. Draw and apply surprise events. Return to My budget to adjust any entries.
-5. Compare totals, write the reflection, and download the Excel workbook before leaving.
+1. **Set up:** choose a part-time job, allowance, or your own numbers; edit the period, income, starting cash, and savings goal.
+2. **First plan:** enter category items and due dates. Check the savings summary and payday timeline, then lock in the first plan.
+3. **Surprise:** draw an unexpected cost or extra income, or test a spending choice. Apply it to the revised plan.
+4. **Revise:** adjust amounts and dates. Compare against the read-only first plan and check the updated timeline.
+5. **Reflect:** view category comparison bars, write what changed and why, save a reopenable plan file, and export Excel.
+
+The original is captured when locking the first plan or navigating to Surprise, Revise, or Reflect. Revisiting First plan shows the original snapshot. Save/open remains compatible with previously downloaded version-1 plan files.
 
 ## Calculation rules
 
