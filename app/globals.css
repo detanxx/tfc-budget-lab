@@ -13,3 +13,70 @@ h1{font-size:clamp(1.65rem,2.8vw,2.1rem)}h2{font-size:clamp(1.45rem,2.3vw,1.85re
 .investments{margin:24px 0}.investments>summary{cursor:pointer;font-weight:600;padding:4px 0}.investments>summary>span{font-weight:400}.investments>summary>strong{float:right}.investment-account{border-top:1px solid var(--linen);padding-top:18px;margin-top:18px}.investment-account h3 small{font-size:13px;font-weight:400}.investment-entry{display:grid;grid-template-columns:minmax(160px,1fr) minmax(0,1fr) 44px;gap:12px;align-items:end;margin:14px 0}.investment-entry input{min-width:0;width:100%;box-sizing:border-box}.investment-entry .icon-button{margin-bottom:3px}@media(max-width:600px){.investment-entry{grid-template-columns:minmax(0,1fr) 36px}.investment-entry>label{grid-column:1}.investment-entry>.icon-button{grid-column:2;grid-row:2}.investments>summary>strong{float:none;display:block;margin:6px 0}.investment-account .section-title{align-items:flex-start}.investment-account h3 small{display:block}}
 
 .income-source{padding:18px 0;border-bottom:1px solid var(--linen);margin-bottom:16px}.income-source>label{max-width:360px}.income-source .hint{overflow-wrap:anywhere}
+
+/* Direction is expressed with signs as well as colour. */
+:root{--money-in:#176b48;--money-out:#a33325;--money-in-bg:#edf9f2;--money-out-bg:#fff1ed}
+.flow-in{background:var(--money-in-bg);border:2px solid var(--aquamarine)}
+.flow-out{background:var(--money-out-bg);border:2px solid var(--vibrant-coral)}
+.flow-in input,.flow-in select,.flow-in .money-input{border-color:var(--money-in)}
+.flow-out input,.flow-out select,.flow-out .money-input{border-color:var(--money-out)}
+.flow-in .money-input input,.flow-out .money-input input{border:0}
+.flow-in .section-title strong,.flow-in h3{color:var(--money-in)}
+.flow-out .category-total strong,.flow-out>h3,.flow-out summary,.flow-out .investment-account .section-title strong{color:var(--money-out)}
+.positive{color:var(--money-in)}.negative{color:var(--money-out)}
+.timeline-row.flow-in-row{background:var(--money-in-bg);border-left:3px solid var(--money-in)}
+.timeline-row.flow-out-row{background:var(--money-out-bg);border-left:3px solid var(--vibrant-coral)}
+.flow-in-row .transaction-amount{color:var(--money-in)}.flow-out-row .transaction-amount{color:var(--money-out)}
+.breakdown{margin:26px 0;padding:22px;border:1px solid var(--border);border-radius:22px;background:var(--paper)}
+.breakdown-row{display:flex;justify-content:space-between;gap:16px;padding:12px;border-radius:10px;margin:5px 0}
+.breakdown-row.positive{background:var(--money-in-bg)}.breakdown-row.negative{background:var(--money-out-bg)}
+.breakdown-row.result{border-top:2px solid currentColor;margin-top:15px}.breakdown .hint{margin:16px 0 0}
+.comparison .bars span{background:var(--money-out);opacity:.45}.comparison .bars span+span{background:var(--money-out);opacity:1}
+.comparison .legend i{background:var(--money-out);opacity:.45}.comparison .legend span+span i{background:var(--money-out);opacity:1}
+@media(max-width:600px){.breakdown{padding:18px 12px}.breakdown-row{gap:8px;font-size:.9rem}.breakdown-row strong:last-child{white-space:nowrap}}
+
+.response-options{display:grid;gap:12px;margin:18px 0}.response-option{display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:var(--paper);border:2px solid var(--linen);padding:18px;gap:8px}.response-option.selected{border-color:var(--vibrant-coral);background:#fff1ed}.response-option span{font-weight:400;font-size:.95rem}
+
+.investment-entry>.form-grid{grid-column:1/-1}.breakdown>section+section{margin-top:28px;border-top:1px solid var(--linen);padding-top:20px}
+
+.savings-section>summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:1.2rem;font-weight:600;color:var(--money-out);min-height:48px;list-style:none}.savings-section>summary:before{content:'▸';flex-shrink:0}.savings-section[open]>summary:before{content:'▾'}.savings-section>summary>span{flex:1}.savings-section summary small{display:block;font-size:.8rem;font-weight:400;color:var(--muted)}.savings-section>summary>strong{text-align:right}.savings-section[open]>summary{margin-bottom:20px}.savings-card{border:1px solid var(--border);border-radius:16px;background:var(--paper);margin:14px 0;overflow:hidden}.savings-card-head{display:flex;align-items:center;gap:8px;padding:10px}.goal-toggle{flex:1;text-align:left;justify-content:space-between;min-width:0;padding:10px}.goal-toggle strong{overflow-wrap:anywhere}.goal-toggle small{display:block;font-size:.83rem;font-weight:400;color:var(--muted);margin-top:5px}.remove-goal{font-size:.85rem;color:var(--money-out);padding:10px;flex-shrink:0}.savings-card-fields{padding:8px 20px 20px}.savings-card-fields[hidden]{display:none}.savings-empty{padding:18px;border:1px dashed var(--money-out);border-radius:14px}@media(max-width:600px){.savings-card-head{flex-wrap:wrap}.goal-toggle{flex-basis:100%}.remove-goal{margin-left:auto}.savings-card-fields{padding:8px 12px 18px}.savings-section>summary{font-size:1.05rem}.savings-section>summary>strong{font-size:1rem}}
+
+/* End-to-end form consistency and mobile touch targets. */
+.entry>label:nth-child(3){font-size:.75rem;color:var(--muted);position:static}.entry>label:nth-child(3):before{content:none}.field-caption{display:block}.entry .money-input{color:var(--deep-navy)}
+.investments>summary{display:flex;align-items:center;gap:12px;list-style:none;min-height:48px;font-size:1.2rem}.investments>summary:before{content:'▸'}.investments[open]>summary:before{content:'▾'}.investments>summary>span{flex:1;font-weight:600}.investments>summary>strong{float:none;text-align:right}.investments summary small{display:block;font-size:.8rem;font-weight:400;color:var(--muted)}.investments[open]>summary{margin-bottom:20px}summary::-webkit-details-marker{display:none}
+.investment-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:16px;background:var(--paper);border:1px solid var(--border);border-radius:16px;align-items:end}.investment-entry>label{grid-column:1;grid-row:1}.investment-entry>.icon-button{grid-column:2;grid-row:1;width:auto;min-width:44px;font-size:.85rem;color:var(--money-out);margin:0}.investment-entry>.form-grid{grid-column:1/-1;grid-row:2;margin:0}.investment-entry .error-text{grid-column:1/-1}.goal-box.flow-out input,.goal-box.flow-out .money-input{background:var(--paper)}.savings-status{background:var(--floral-white);border:1px solid var(--border)}
+.event-recap p+p{margin-top:12px}.event-recap small{display:block;font-size:.88rem;margin-top:6px}.response-option{overflow-wrap:anywhere}.response-option.selected{box-shadow:inset 4px 0 0 var(--vibrant-coral)}.comparison,.breakdown{font-variant-numeric:tabular-nums}.savings-card:focus-within{overflow:visible}.entry,.form-grid{scroll-margin-top:20px}
+@media(max-width:600px){.entry{grid-template-columns:minmax(0,1fr) 44px;gap:10px}.entry-name{grid-column:1;grid-row:1}.entry>.icon-button{grid-column:2;grid-row:1;min-width:44px;width:44px}.entry-date{grid-column:1/-1;grid-row:2}.entry>label:nth-child(3){grid-column:1/-1;grid-row:3}.category .section-title{flex-wrap:wrap}.category-label{flex-basis:100%}.category .icon-button{min-width:44px;width:44px}.category-total{margin-right:auto;text-align:left}.investments>summary{font-size:1.05rem}.investments>summary>strong{margin:0;font-size:1rem}.investment-entry{padding:12px;grid-template-columns:minmax(0,1fr) auto}.investment-entry>.icon-button{grid-row:1;grid-column:2}.investment-entry>.form-grid{grid-row:2}.savings-section .event-filters{grid-template-columns:1fr}.breakdown-row{flex-wrap:wrap}.event-card{padding:20px 14px}}
+
+/* Focus belongs to the whole money control, not its nested input. */
+.money-input:focus-within{border-color:var(--deep-navy);outline:2px solid var(--deep-navy);outline-offset:2px;box-shadow:none}
+.money-input>input:focus,.money-input>input:focus-visible{outline:none;box-shadow:none}
+.flow-in .money-input:focus-within{border-color:var(--money-in);outline-color:var(--money-in)}
+.flow-out .money-input:focus-within{border-color:var(--money-out);outline-color:var(--money-out)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline-width:2px;outline-offset:2px}
+.flow-in input:focus-visible,.flow-in select:focus-visible{outline-color:var(--money-in)}
+.flow-out input:focus-visible,.flow-out select:focus-visible{outline-color:var(--money-out)}
+
+/* Saving for the future is distinct from spending. */
+:root{--savings-ink:#176b48;--investment-ink:#514780}
+.future-savings{background:#edf9f2;border:1.5px solid var(--aquamarine)}.future-investments{background:#f3f1f8;border:1.5px solid #aaa1c5}
+.savings-section>summary:before,.investments>summary:before{content:none!important}
+.savings-section>summary,.investments>summary{display:flex;align-items:center;gap:12px;min-height:56px;font-size:1.12rem;padding:0;color:var(--deep-navy)}
+.section-chevron{flex:0 0 20px;align-self:center;transform:rotate(0deg)}details[open]>summary>.section-chevron{transform:rotate(90deg)}
+.future-savings>summary strong{color:var(--savings-ink)}.future-investments>summary strong,.future-investments .section-title>strong{color:var(--investment-ink)}
+.future-savings input,.future-savings select,.future-savings .money-input{border-color:#74aa92;background:var(--paper)}.future-investments input,.future-investments select,.future-investments .money-input{border-color:#aaa1c5;background:var(--paper)}
+.future-savings .money-input input,.future-investments .money-input input{border:0}
+.future-savings .money-input:focus-within,.future-savings input:focus-visible,.future-savings select:focus-visible{outline-color:var(--savings-ink)}.future-investments .money-input:focus-within,.future-investments input:focus-visible,.future-investments select:focus-visible{outline-color:var(--investment-ink)}
+.savings-colour{color:var(--savings-ink)}.investment-colour{color:var(--investment-ink)}.breakdown-row.savings-colour,.timeline-row.savings-row{background:#edf9f2}.breakdown-row.investment-colour,.timeline-row.investment-row{background:#eeebf5}
+.timeline-row.savings-row{border-left:3px solid var(--aquamarine)}.timeline-row.investment-row{border-left:3px solid #aaa1c5}.savings-row .transaction-amount{color:var(--savings-ink)}.investment-row .transaction-amount{color:var(--investment-ink)}
+.comparison .savings-colour .bars span{background:var(--savings-ink)}.comparison .investment-colour .bars span{background:var(--investment-ink)}.account-description{font-size:.9rem;color:var(--muted);line-height:1.6;max-width:70ch}.account-description a{display:inline-block;text-underline-offset:3px}
+@media(max-width:600px){.savings-section>summary,.investments>summary{font-size:1.05rem;gap:8px}.savings-section summary small,.investments summary small{font-size:.75rem}}
+
+/* Savings uses the brand's yellow, distinct from green income. */
+:root{--savings-ink:#795500}
+.future-savings{background:#fff8df;border-color:var(--mustard)}
+.future-savings input,.future-savings select,.future-savings .money-input{border-color:#b99635}
+.future-savings .money-input:focus-within{border-color:var(--savings-ink);outline-color:var(--savings-ink)}
+.breakdown-row.savings-colour,.timeline-row.savings-row{background:#fff8df}
+.timeline-row.savings-row{border-left-color:var(--mustard)}
+.future-savings .notice,.future-savings .savings-empty{background:#fff4cb;border-color:#b99635}
