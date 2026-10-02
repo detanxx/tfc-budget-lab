@@ -83,3 +83,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline-width:2p
 
 /* File actions are useful once a complete template is ready, not during setup. */
 .site-header .file-actions{display:none!important}
+
+/* Keep long labels and controls inside their cards on narrow screens. */
+.entry,.investment-entry{min-width:0;max-width:100%}
+.entry>*,.investment-entry>*{min-width:0}
+.entry input,.entry select,.investment-entry input,.investment-entry select{max-width:100%;min-width:0}
+.expense-section{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:22px;margin:24px 0}
+.expense-section>summary{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:1.2rem;font-weight:600;list-style:none}
+.expense-section>summary::-webkit-details-marker{display:none}
+.expense-section>summary strong{margin-left:auto}
+.expense-section-body{padding-top:8px}
