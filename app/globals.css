@@ -80,3 +80,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline-width:2p
 .breakdown-row.savings-colour,.timeline-row.savings-row{background:#fff8df}
 .timeline-row.savings-row{border-left-color:var(--mustard)}
 .future-savings .notice,.future-savings .savings-empty{background:#fff4cb;border-color:#b99635}
+
+/* File actions are useful once a complete template is ready, not during setup. */
+.site-header .file-actions{display:none!important}

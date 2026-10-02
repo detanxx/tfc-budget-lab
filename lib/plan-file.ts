@@ -12,4 +12,4 @@ const schema=z.object({format:z.literal('tfc-budget-lab'),version:z.literal(1),b
 export type SavedPlan={format:'tfc-budget-lab';version:1;budget:Budget;original:Budget|null;events:Log[];trades:Log[];reflection:string};
 export function parsePlan(source:string):SavedPlan{if(source.length>2000000)throw new Error('File too large');return schema.parse(JSON.parse(source));}
 export function serializePlan(plan:SavedPlan){return JSON.stringify(schema.parse(plan),null,2);}
-export function savePlan(plan:SavedPlan){const url=URL.createObjectURL(new Blob([serializePlan(plan)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='TFC-My-Plan.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+export function savePlan(plan:SavedPlan){const url=URL.createObjectURL(new Blob([serializePlan(plan)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='TFC-Budget-Template.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
