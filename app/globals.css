@@ -138,3 +138,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.money-input:foc
 .timeline-row time{font-size:14px}
 @media(max-width:1023px){main,.header-inner{padding-left:24px;padding-right:24px}.entry{grid-template-columns:minmax(0,1fr) 160px 110px 44px}}
 @media(max-width:767px){main,.header-inner{padding-left:16px;padding-right:16px}.panel,.inset,.goal-box,.expense-section,.event-card,.comparison,.breakdown,.savings-card,.investment-entry,.takeaway,.hero{padding:16px}.form-grid.two,.form-grid.three,.starting-options{grid-template-columns:minmax(0,1fr)}.entry{grid-template-columns:minmax(0,1fr) 44px}.entry-name{grid-column:1;grid-row:1}.entry>.icon-button{grid-column:2;grid-row:1}.entry-date{grid-column:1/-1;grid-row:2}.entry>label:nth-child(3){grid-column:1/-1;grid-row:3}.timeline-head,.timeline-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.timeline-head{display:none}.timeline-row time{grid-column:1}.timeline-row .transaction-name{grid-column:1/-1;grid-row:2}.timeline-row .transaction-amount{grid-column:1;grid-row:3;text-align:left}.timeline-row .balance{grid-column:2;grid-row:3}.section-title{flex-wrap:wrap}.expense-section>summary,.savings-section>summary,.investments>summary{flex-wrap:wrap}.expense-section>summary strong,.savings-section>summary strong,.investments>summary strong{margin-left:auto}.actions{flex-wrap:wrap}.category-label{flex-basis:100%}}
+
+/* Each step explains its purpose and next actions without hiding instructions. */
+.step-intro{margin-bottom:24px}
+.step-intro .lead{margin-bottom:16px}
+.step-instructions{padding:16px 24px;background:var(--floral-white);border:1px solid var(--border);border-radius:12px}
+.step-instructions h3{font-size:18px;margin:0 0 8px}
+.step-instructions ol{margin:0;padding-left:24px}
+.step-instructions li{padding-left:4px;overflow-wrap:anywhere}
+.step-instructions li+li{margin-top:8px}
+.step-instructions li::marker{color:var(--deep-navy);font-weight:600}
+@media(max-width:767px){.step-instructions{padding:16px}}
