@@ -165,3 +165,38 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.money-input:foc
 .app-nav a:hover{background:var(--linen)}
 @media(min-width:768px) and (max-width:1023px){.site-header .header-inner{padding-left:24px;padding-right:24px}}
 @media(max-width:767px){.site-header .header-inner{flex-wrap:wrap;gap:8px;padding:12px 16px}.site-header .brand img{height:40px;width:40px}.site-header .brand strong{font-size:22px}.app-nav{width:100%}.brand-dot{margin-left:8px}}
+
+/* Product release badge, distinct from navigation and status colours. */
+.site-header .brand .beta-tag{display:inline-block;vertical-align:middle;margin-left:8px;padding:4px 8px;border-radius:8px;background:var(--mustard);color:var(--deep-navy);font-size:12px;font-weight:600;line-height:1.25;letter-spacing:0}
+
+/* Compact contextual help; native popovers support tap, keyboard, Escape and outside click. */
+.inline-help{margin:0 0 8px;min-width:0}
+.learn-more{display:inline-flex;min-height:44px;padding:4px 0;gap:6px;border:0;background:transparent;border-radius:4px;color:var(--deep-navy);font-size:14px;font-weight:500;text-decoration:none}
+.learn-more span{font-size:18px;text-decoration:none}
+.help-popover{position:fixed;inset:auto;margin:0;width:min(440px,calc(100vw - 32px));padding:16px;background:#fff;color:var(--deep-navy);border:1px solid var(--lavender-mist);border-radius:12px;box-shadow:0 8px 24px #16163320;overflow:auto;font-size:14px;line-height:1.6;box-sizing:border-box}
+.help-popover::backdrop{background:transparent}
+.help-popover p,.help-popover .account-description{margin:8px 0;font-size:14px}
+.help-close{min-height:44px;padding:8px 0;color:var(--deep-navy);font-size:14px;font-weight:500;text-decoration:underline}
+
+/* Contextual help shares the heading row instead of adding a separate block. */
+.heading-with-help{display:flex;align-items:center;flex-wrap:wrap;gap:0 8px;min-width:0}
+.heading-with-help>h2,.heading-with-help>h3{margin:0}
+.heading-with-help .inline-help,summary>.inline-help{display:inline-flex;flex:0 0 auto;margin:0;align-items:center}
+.heading-with-help .learn-more,summary>.inline-help .learn-more{margin:0;min-height:44px;padding:4px;font-size:14px;white-space:nowrap}
+.savings-section>summary>span,.investments>summary>span{flex:0 1 auto}
+.savings-section>summary>strong,.investments>summary>strong,.expense-section>summary>strong{margin-left:auto}
+.heading-with-help+ .hint{margin-top:4px}
+
+/* Decision feedback: compact, persistent, and based on the calculated budget. */
+.budget-pulse{position:sticky;top:8px;z-index:10;background:#fff;border:1px solid #e2e2eb;border-radius:12px;padding:12px 16px;margin:0 0 24px;box-shadow:0 4px 16px #1616330d;max-height:45vh;overflow:auto}
+.pulse-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.pulse-head>span:last-child{text-align:right}.pulse-head small{display:block;font-size:14px;color:#53536d}.pulse-head strong{font-size:24px;font-variant-numeric:tabular-nums}.pulse-head .pulse-short{color:#a33323}
+.pulse-details summary{display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;cursor:pointer;list-style:none}.pulse-details summary::before{content:'›';font-size:20px}.pulse-details[open] summary::before{transform:rotate(90deg)}.pulse-details summary span{margin-left:auto;color:#53536d}
+.allocation-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:#f2e9dd;margin:4px 0 12px}.allocation-bar span{flex-shrink:0}
+.allocation-key{list-style:none;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0;margin:0;font-size:14px}.allocation-key li{display:flex;align-items:center;gap:8px}.allocation-key i{width:10px;height:10px;border-radius:3px}.allocation-key strong{font-size:14px}.allocation-bar .expense,.allocation-key .expense{background:#f9735c}.allocation-bar .saving,.allocation-key .saving{background:#fcd34d}.allocation-bar .investment,.allocation-key .investment{background:#b0a4d5}.allocation-bar .remaining,.allocation-key .remaining{background:#6ed9b3}
+.pulse-insight{font-size:14px;margin:0;line-height:1.5;color:#53536d}.pulse-insight.attention{color:#923321}.pulse-details .hint{margin:12px 0}.comparison-insight{padding:16px;background:#fbf6ee;border-radius:8px}
+.step-instructions{padding:0;background:transparent;border:0}.step-instructions summary{min-height:44px;cursor:pointer;font-size:14px;font-weight:600;display:list-item;list-style-position:inside}.step-instructions ol{padding:8px 0 8px 24px;font-size:14px}.step-intro{margin-bottom:24px}.step-intro .lead{margin-bottom:4px}
+.hero{padding:24px 32px}.hero>img{display:none}.hero p{margin-bottom:0}.template-download{background:transparent;box-shadow:none}.template-download h2{font-size:18px}
+html{scroll-padding-top:220px}input,select,button,summary,textarea{scroll-margin-top:220px}
+@media(max-width:767px){.budget-pulse{padding:8px 12px;top:4px;margin-bottom:16px}.pulse-head strong{font-size:20px}.pulse-head small,.pulse-insight,.pulse-details summary{font-size:14px}.allocation-key{display:grid;grid-template-columns:1fr 1fr;gap:8px}.allocation-key li{flex-wrap:wrap}.allocation-key strong{width:100%;padding-left:18px}.hero{padding:24px 16px}.pulse-details summary span{font-size:12px}.pulse-head{gap:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
