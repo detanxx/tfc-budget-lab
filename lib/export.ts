@@ -1,7 +1,12 @@
 import ExcelJS from 'exceljs';
+import {addBudgetTemplate} from './budget-template.ts';
 import {analyse,monthlyBreakdown,scheduledIncome,investmentAccounts,type Budget,type Log} from './budget.ts';
 export async function workbook(original:Budget,revised:Budget,events:Log[],trades:Log[],reflection:string){
  const book=new ExcelJS.Workbook();book.creator='Teen Finance Club';book.subject='TFC Budget Lab budget planner';
+ book.calcProperties.fullCalcOnLoad=true;
+ addBudgetTemplate(book,'Original budget',original);
+ addBudgetTemplate(book,'Revised budget',revised);
+ addBudgetTemplate(book,'Budget Template');
  const sheet=(name:string,head:string[],rows:(string|number)[][])=>{const s=book.addWorksheet(name);s.addRow(head);rows.forEach(r=>s.addRow(r));s.views=[{state:'frozen',ySplit:1}];s.getRow(1).font={bold:true,color:{argb:'FFFFFFFF'}};s.getRow(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1A1A57'}};s.columns.forEach((c,i)=>{c.width=i===0?28:24});s.eachRow(r=>r.eachCell(c=>{c.alignment={vertical:'top',wrapText:true};if(typeof c.value==='number')c.numFmt='"CA$"#,##0.00;[Red]-"CA$"#,##0.00'}));return s;};
  sheet('Comparison',['Metric','Original (CAD)','Revised (CAD)'],(['income','expenses','savings','investments','left','lowest'] as const).map((k,i)=>[[ 'Income','Expenses','Savings set aside','Investments','Money left over','Lowest cash balance'][i],analyse(original)[k],analyse(revised)[k]]));
  for(const [label,b] of [['Original',original],['Revised',revised]] as const){const a=analyse(b);
