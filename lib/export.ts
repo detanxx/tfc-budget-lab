@@ -1,27 +1,29 @@
 import ExcelJS from 'exceljs';
 import {addBudgetTemplate} from './budget-template.ts';
-import {analyse,monthlyBreakdown,scheduledIncome,investmentAccounts,type Budget,type Log} from './budget.ts';
+import {analyse,type Budget,type Log} from './budget.ts';
 export async function workbook(original:Budget,revised:Budget,events:Log[],trades:Log[],reflection:string){
  const book=new ExcelJS.Workbook();book.creator='Teen Finance Club';book.subject='TFC Budget Lab budget planner';
  book.calcProperties.fullCalcOnLoad=true;
- addBudgetTemplate(book,'Original budget',original);
- addBudgetTemplate(book,'Revised budget',revised);
  addBudgetTemplate(book,'Budget Template');
- const sheet=(name:string,head:string[],rows:(string|number)[][])=>{const s=book.addWorksheet(name);s.addRow(head);rows.forEach(r=>s.addRow(r));s.views=[{state:'frozen',ySplit:1}];s.getRow(1).font={bold:true,color:{argb:'FFFFFFFF'}};s.getRow(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1A1A57'}};s.columns.forEach((c,i)=>{c.width=i===0?28:24});s.eachRow(r=>r.eachCell(c=>{c.alignment={vertical:'top',wrapText:true};if(typeof c.value==='number')c.numFmt='"CA$"#,##0.00;[Red]-"CA$"#,##0.00'}));return s;};
- sheet('Comparison',['Metric','Original (CAD)','Revised (CAD)'],(['income','expenses','savings','investments','left','lowest'] as const).map((k,i)=>[[ 'Income','Expenses','Savings set aside','Investments','Money left over','Lowest cash balance'][i],analyse(original)[k],analyse(revised)[k]]));
- for(const [label,b] of [['Original',original],['Revised',revised]] as const){const a=analyse(b);
- sheet(label+' details',['Type','Category','Name','Amount (CAD)','Date (YYYY-MM-DD)','Included in period'],[...scheduledIncome(b).map(i=>['Income','',i.name,i.amount,i.date,i.date>=b.start&&i.date<=b.end?'Yes':'No']),...b.categories.flatMap(c=>c.items.map(i=>['Expense',c.name,i.name,i.amount,i.date,i.date>=b.start&&i.date<=b.end?'Yes':'No'])),...a.contributions.map(i=>['Investment',i.account,i.account+' contribution',i.amount,i.date,i.date>=b.start&&i.date<=b.end?'Yes':'No'])]);
- sheet(label+' income schedules',['Source','Amount per payment (CAD)','Start date','Cadence'],b.income.map(i=>[i.name,i.amount,i.date,i.cadence||'once']));
- sheet(label+' totals',['Category','Period total (CAD)'],[...b.categories.map(c=>[c.name,c.items.filter(i=>i.date>=b.start&&i.date<=b.end).reduce((v,i)=>v+Math.round(i.amount*100),0)/100]),['Investments total',a.investments],...investmentAccounts.map(account=>['Investments · '+account,a.investmentTotals[account]])]);
- sheet(label+' goal',['Goal','Target (CAD)','Already saved (CAD)','Target date','Contribution (CAD)','First date','Frequency','End date','Saved this period (CAD)','Still needed (CAD)'],a.goalResults.map(r=>[r.goal.name,r.goal.amount,r.goal.saved,r.goal.target,r.goal.perPayday,r.goal.date,r.goal.cadence||'once',r.goal.endDate||'',r.saved/100,r.remaining/100]));
- sheet(label+' investment schedules',['Account','Amount per contribution (CAD)','First date','Frequency','End date'],(b.investments||[]).map(i=>[i.account,i.amount,i.date,i.cadence||'once',i.endDate||'']));
- sheet(label+' monthly',['Month','Opening balance (CAD)','Income (CAD)','Expenses (CAD)','Savings (CAD)','Investments (CAD)','Money left over (CAD)'],monthlyBreakdown(b).map(m=>[m.month,m.opening,m.income,m.expenses,m.savings,m.investments,m.left]));
- sheet(label+' cash flow',['Date','Type','Description','Amount (CAD)','Cash balance (CAD)','Next payday'],a.timeline.map(t=>[t.date,t.type,t.name,t.amount*(t.type==='Payday'?1:-1),t.balance,t.nextPayday||'None entered']));
+ addBudgetTemplate(book,'Original budget',original);
+ const revisedSheet=addBudgetTemplate(book,'Revised budget',revised);
+ // Keep the learner's context with their revised plan, without extra tabs.
+ const note=(title:string,text:string)=>{const row=revisedSheet.addRow([title,null,null,null,text]);row.height=Math.max(32,Math.ceil(text.length/45)*15);row.getCell(1).font={bold:true,color:{argb:'FF1A1A57'}};row.eachCell(c=>{c.alignment={vertical:'top',wrapText:true};});};
+ if(events.length||trades.length||reflection)revisedSheet.addRow([]);
+ events.forEach(e=>note('Surprise · '+e.name,`${e.date} · CA$${e.amount.toFixed(2)} · ${e.detail}`));
+ trades.forEach(t=>note('Choice · '+t.name,`${t.date} · CA$${t.amount.toFixed(2)} · ${t.detail}`));
+ if(reflection)note('What did you change, and why?',reflection);
+ const cash=book.addWorksheet('Cashflow');
+ cash.columns=[{width:16},{width:16},{width:18},{width:48},{width:20},{width:22},{width:18}];
+ cash.views=[{state:'frozen',ySplit:2,showGridLines:false}];
+ cash.mergeCells('A1:G1');cash.getCell('A1').value='Cash flow • CAD • Income arrives first on the same date. Savings and investments reduce spendable cash.';cash.getRow(1).height=36;
+ cash.addRow(['Budget','Date','Type','Description','In / out (CAD)','Money available (CAD)','Next payday']);
+ for(const [label,b] of [['Original',original],['Revised',revised]] as const){
+  cash.addRow([label,b.start,'Starting cash','Money available at the start',0,b.opening,'']);
+  analyse(b).timeline.forEach(t=>cash.addRow([label,t.date,t.type,t.name,t.amount*(t.type==='Payday'?1:-1),t.balance,t.nextPayday||'None entered']));
  }
- sheet('Surprise events',['Event','Impact (CAD)','Date','What happened'],events.map(e=>[e.name,e.amount,e.date,e.detail]));
- sheet('Trade-offs',['Choice','Cost (CAD)','Date','Effect'],trades.map(e=>[e.name,e.amount,e.date,e.detail]));
- sheet('Reflection',['Prompt','Your reflection'],[['What did you change, and why?',reflection]]);
- sheet('Read me',['Topic','Notes'],[['Currency','All amounts in Canadian dollars (CAD).'],['Dates','Dates are ISO YYYY-MM-DD text to preserve local calendar dates.'],['Cash flow','Starting cash plus income minus expenses, savings, and investment contributions. Income arrives first on the same date.'],['Recurring income','Amounts are per payment. Weekly and biweekly schedules repeat from the start date; twice-monthly uses the 1st and 16th; monthly uses the same day, capped at month end. Only generated paydays in this period are counted. Income schedules preserve the rules; details and cash flow list actual payments.'],['Savings','Unique positive-income dates are paydays. Savings follow each goal’s one-time or recurring schedule through its end or target date, capped at the remaining goal and the money left after period expenses and investments. All goals share available money in date order, with listed goal order breaking ties. Existing goal savings are separate from starting cash.'],['Investments','TFSA, FHSA, and RRSP are account types that can hold savings or investments. Account choices are simulated for learning and do not open real accounts. Contributions are counted once under Investments, never under Expenses or Savings. No returns are added to income.'],['Scope','Only entries within the single budgeting period affect totals. No future paydays are assumed.'],['Original','The original is captured when locking the first plan or opening Surprise, Revise, or Reflect. If exported before that, both budgets match.'],['Storage','This is a snapshot. No personal budget data is stored by the app.']] );
+ cash.autoFilter={from:'A2',to:`G${cash.rowCount}`};
+ cash.eachRow((r,n)=>{r.height=n===1?36:30;r.eachCell(c=>{c.font={name:'Calibri',size:11,color:{argb:'FF1A1A57'}};c.alignment={vertical:'middle',wrapText:true};if(n<=2){c.font={...c.font,bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1A1A57'}};}else if(n%2===0)c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFBF6EE'}};});if(n>2)for(const col of [5,6])r.getCell(col).numFmt='"CA$"#,##0.00;[Red]-"CA$"#,##0.00';});
  return book;
 }
 export async function exportBudget(original:Budget,revised:Budget,events:Log[],trades:Log[],reflection:string){const book=await workbook(original,revised,events,trades,reflection);const data=await book.xlsx.writeBuffer();const url=URL.createObjectURL(new Blob([data as BlobPart],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));const link=document.createElement('a');link.href=url;link.download='TFC-Budget-Lab.xlsx';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
