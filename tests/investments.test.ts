@@ -20,9 +20,8 @@ test('Excel preserves original and revised investments, account totals and cash 
  const original=example();original.investments=[{id:'1',account:'TFSA',amount:20,date:'2026-10-09'}];const revised=structuredClone(original);revised.investments![0].amount=30;
  const book=await workbook(original,revised,[],[],'Saving and investing separately.');const read=new ExcelJS.Workbook();await read.xlsx.load(await book.xlsx.writeBuffer());
  const rows=(name:string)=>read.getWorksheet(name)!.getSheetValues().map(r=>Array.isArray(r)?r.slice(1):[]);
- assert.ok(rows('Comparison').some(r=>r[0]==='Investments'&&r[1]===20&&r[2]===30));
- assert.ok(rows('Revised details').some(r=>r[0]==='Investment'&&r[1]==='TFSA'&&r[3]===30&&r[4]==='2026-10-09'));
- assert.ok(rows('Revised totals').some(r=>r[0]==='Investments total'&&r[1]===30));
- assert.ok(rows('Revised totals').some(r=>r[0]==='Investments · TFSA'&&r[1]===30));
- assert.ok(rows('Revised cash flow').some(r=>r[1]==='Investment'&&r[3]===-30));
+ assert.ok(rows('Cashflow').some(r=>r[0]==='Original'&&r[2]==='Investment'&&r[4]===-20));
+ assert.ok(rows('Cashflow').some(r=>r[0]==='Revised'&&r[2]==='Investment'&&r[4]===-30&&r[1]==='2026-10-09'));
+ assert.ok(rows('Original budget').some(r=>r[0]==='TFSA'&&r[1]===20));
+ assert.ok(rows('Revised budget').some(r=>r[0]==='TFSA'&&r[1]===30));
 });
