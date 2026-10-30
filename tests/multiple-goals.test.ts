@@ -14,5 +14,5 @@ test('recurrences end inclusively, monthly balances carry, and plans export sche
  const a=analyse(b);assert.equal(a.savings,80);assert.equal(a.investments,40);assert.equal(a.left,880);
  const months=monthlyBreakdown(b);assert.deepEqual(months.map(m=>m.opening),[1000,940,880]);assert.deepEqual(months.map(m=>m.left),[940,880,880]);
  const plan={format:'tfc-budget-lab' as const,version:1 as const,budget:b,original:null,events:[],trades:[],reflection:''};assert.deepEqual(parsePlan(serializePlan(plan)),plan);
- const book=await workbook(b,b,[],[],'');assert.equal(book.getWorksheet('Revised monthly')!.getCell('G3').value,880);assert.equal(book.getWorksheet('Revised goal')!.getCell('H2').value,'2026-11-10');
+ const book=await workbook(b,b,[],[],'');const rows=book.getWorksheet('Cashflow')!.getSheetValues().map(r=>Array.isArray(r)?r:[]);const revised=rows.filter(r=>r[1]==='Revised');assert.equal(revised.at(-1)![6],880);assert.equal(revised.filter(r=>r[3]==='Investment').length,2);assert.ok(revised.some(r=>r[2]==='2026-11-10'));assert.ok(!revised.some(r=>r[2]==='2026-12-10'));
 });
