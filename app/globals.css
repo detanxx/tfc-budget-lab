@@ -200,3 +200,82 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.money-input:foc
 html{scroll-padding-top:220px}input,select,button,summary,textarea{scroll-margin-top:220px}
 @media(max-width:767px){.budget-pulse{padding:8px 12px;top:4px;margin-bottom:16px}.pulse-head strong{font-size:20px}.pulse-head small,.pulse-insight,.pulse-details summary{font-size:14px}.allocation-key{display:grid;grid-template-columns:1fr 1fr;gap:8px}.allocation-key li{flex-wrap:wrap}.allocation-key strong{width:100%;padding-left:18px}.hero{padding:24px 16px}.pulse-details summary span{font-size:12px}.pulse-head{gap:8px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Compact category rows: shared column labels, individual accessible input names. */
+.compact-entries .entry-columns,.compact-entries .entry{display:grid;grid-template-columns:minmax(0,1fr) 176px 136px 44px;gap:8px;align-items:center}
+.compact-entries .entry-columns{font-size:14px;color:var(--muted);padding:0 0 8px}
+.compact-entries .entry{margin:0;padding:8px 0;border-bottom:1px solid #e2e2eb}
+.compact-entries .entry:last-child{border-bottom:0}
+.compact-entries .entry label{margin:0;gap:0;min-width:0}
+.compact-entries .entry-caption,.compact-entries .field-caption{display:none}
+.compact-entries .entry>label:nth-child(3)::before{content:none}
+.compact-entries .entry input,.compact-entries .money-input{height:44px;min-height:44px;box-shadow:none;background:#fff;border-color:#c9c9d8}
+.compact-entries .money-input input{height:42px;min-height:42px;background:transparent}
+.compact-entries .entry>.icon-button{height:44px;min-width:44px;align-self:center}
+.category .compact-entries + .text-button{margin-top:8px}
+@media(max-width:767px){
+.compact-entries .entry-columns{display:none}
+.compact-entries .entry{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;gap:8px;padding:12px 0}
+.compact-entries .entry-name{grid-column:1/3;grid-row:1}
+.compact-entries .entry>.icon-button{grid-column:3;grid-row:1}
+.compact-entries .entry-date{grid-column:1/3;grid-row:2}
+.compact-entries .entry>label:nth-child(3){grid-column:1/3;grid-row:3;color:var(--deep-navy)}
+.compact-entries .entry-date .entry-caption,.compact-entries .field-caption{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+}
+
+/* Compact editors shared by expenses, goals, and investment schedules. */
+.expense-section,.savings-section,.investments{padding:16px;margin:16px 0}
+.expense-section-body .category{padding:12px 16px;margin:12px 0;border-radius:10px;box-shadow:none}
+.category .section-title{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:8px;align-items:center}
+.category .category-label{flex:1;min-width:0;flex-basis:auto}
+.category .category-label input{padding:4px 8px;height:44px;min-height:44px;font-size:18px}
+.category .category-total{margin:0 0 0 auto;text-align:right;flex-shrink:0}
+.category .category-total strong{font-size:16px}
+.category .hint{margin:0 0 8px;font-size:14px}
+.category .text-button,.add-category{min-height:44px;padding:8px;margin:0;text-decoration:none}
+.compact-entries .entry{padding:4px 0}
+.compact-entries .entry-columns{padding-bottom:4px}
+.savings-section[open]>summary{margin-bottom:8px}
+.savings-section>p,.investments>p{margin:8px 0;font-size:14px}
+.goal-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.goal-suggestions button{border-radius:24px;min-height:44px;padding:8px 12px;font-size:14px;box-shadow:none}
+.savings-card{margin:8px 0;padding:0;border-radius:10px;box-shadow:none}
+.savings-card-head{padding:4px 8px;gap:8px;flex-wrap:nowrap}
+.savings-card .goal-toggle{padding:8px 0;gap:16px;flex-basis:auto}
+.goal-toggle>span:first-child{flex:1;min-width:0}.goal-toggle strong{font-size:16px}.goal-toggle small{font-size:14px;margin-top:2px}
+.goal-edit{font-size:14px;font-weight:500;flex-shrink:0}
+.goal-progress{display:block;width:100%;max-width:240px;height:4px;margin-top:6px;accent-color:#826300;border:0;border-radius:4px;overflow:hidden}
+.goal-progress::-webkit-progress-bar{background:#f2e9dd}.goal-progress::-webkit-progress-value{background:#826300}
+.savings-card .remove-goal{min-height:44px;min-width:44px;padding:8px;font-size:14px;margin:0}
+.savings-card-fields{padding:8px 12px 12px;border-top:1px solid var(--border);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:12px}
+.savings-card-fields>.form-grid.two{grid-column:1/-1;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;gap:12px}
+.savings-card-fields>.form-grid.three{margin:0;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.savings-card-fields>p,.savings-card-fields>.text-button{grid-column:1/-1;margin:0;font-size:14px}
+.savings-card-fields label,.investment-entry label{font-size:14px;gap:4px}
+.savings-card-fields input,.savings-card-fields select,.savings-card-fields .money-input,.investment-entry input,.investment-entry select,.investment-entry .money-input{min-height:44px;height:44px;box-shadow:none}
+.savings-card-fields .money-input input,.investment-entry .money-input input{min-height:42px;height:42px}
+.investment-account{padding-top:12px;margin-top:12px}
+.investment-account .section-title{margin-bottom:4px}
+.investment-account .text-button{padding:8px 0;min-height:44px;margin:0;text-decoration:none}
+.investment-entry{display:grid;grid-template-columns:minmax(120px,1fr) minmax(0,4fr) 44px;gap:12px;padding:8px 0;margin:4px 0;border:0;border-bottom:1px solid var(--border);border-radius:0;align-items:end;box-shadow:none}
+.investment-entry>.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;grid-row:auto;grid-column:auto}
+.investment-entry>.icon-button{grid-row:1;grid-column:3;width:44px;height:44px;margin:0}
+.investment-entry>.error-text{grid-column:1/-1;grid-row:2;margin:0}
+@media(min-width:768px) and (max-width:1023px){
+.compact-entries .entry-columns,.compact-entries .entry{grid-template-columns:minmax(0,1fr) 156px 104px 44px}
+.savings-card-fields>.form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.investment-entry{grid-template-columns:minmax(120px,1fr) minmax(0,3fr) 44px}.investment-entry>.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:767px){
+.expense-section,.savings-section,.investments{padding:12px}
+.expense-section-body .category{padding:8px;margin:8px 0}
+.category .section-title{flex-wrap:wrap}.category .category-label{flex-basis:100%}.category .category-total{margin-left:0;margin-right:auto}
+.compact-entries .entry{grid-template-columns:minmax(0,1.3fr) minmax(80px,1fr) 44px;padding:8px 0}
+.compact-entries .entry-name{grid-column:1/3;grid-row:1}.compact-entries .entry-date{grid-column:1;grid-row:2}.compact-entries .entry>label:nth-child(3){grid-column:2/4;grid-row:2}
+.compact-entries .entry input{padding-left:6px;padding-right:4px;font-size:16px}
+.savings-card-head{gap:4px}.savings-card .goal-toggle{gap:8px}.savings-card .remove-goal{font-size:0;gap:0}.goal-edit{font-size:14px}
+.savings-card-fields{grid-template-columns:minmax(0,1fr);gap:8px}.savings-card-fields>.form-grid.two,.savings-card-fields>.form-grid.three{grid-column:1;grid-template-columns:minmax(0,1fr);gap:8px}
+.investment-entry{grid-template-columns:minmax(0,1fr) 44px;gap:8px}.investment-entry>.form-grid{grid-column:1/-1;grid-row:2;grid-template-columns:minmax(0,1fr);gap:8px}.investment-entry>.icon-button{grid-column:2;grid-row:1}.investment-entry>.error-text{grid-row:3}
+}
+
+.first-plan-finish{padding:24px;background:var(--floral-white);border:1px solid var(--border);border-radius:12px;margin-top:24px}.first-plan-finish .actions{margin-top:16px;flex-wrap:wrap;justify-content:flex-start}.first-plan-finish p{margin:8px 0}@media(max-width:767px){.first-plan-finish{padding:16px}.first-plan-finish .actions>*{width:100%}}
