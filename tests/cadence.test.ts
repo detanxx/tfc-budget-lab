@@ -16,5 +16,5 @@ test('twice monthly differs from biweekly and monthly keeps its anchor through F
 test('cadence survives saving and exports rules and generated payments with original comparison',async()=>{
  const b=example('blank');b.categories=[];b.goal.amount=200;b.income=[{id:'a',name:'Pay',amount:100,date:'2026-10-01',cadence:'biweekly'}];const original=structuredClone(b);b.income[0].cadence='weekly';
  const plan={format:'tfc-budget-lab' as const,version:1 as const,budget:b,original,events:[],trades:[],reflection:''};assert.deepEqual(parsePlan(serializePlan(plan)),plan);
- const book=await workbook(original,b,[],[],'');assert.equal(book.getWorksheet('Revised income schedules')!.getCell('D2').value,'weekly');assert.equal(book.getWorksheet('Revised details')!.rowCount,6);assert.equal(book.getWorksheet('Comparison')!.getCell('B2').value,300);assert.equal(book.getWorksheet('Comparison')!.getCell('C2').value,500);
+ const book=await workbook(original,b,[],[],'');const rows=book.getWorksheet('Cashflow')!.getSheetValues().map(r=>Array.isArray(r)?r:[]);assert.equal(rows.filter(r=>r[1]==='Original'&&r[3]==='Payday').length,3);assert.equal(rows.filter(r=>r[1]==='Revised'&&r[3]==='Payday').length,5);
 });
