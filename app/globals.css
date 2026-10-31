@@ -279,3 +279,12 @@ html{scroll-padding-top:220px}input,select,button,summary,textarea{scroll-margin
 }
 
 .first-plan-finish{padding:24px;background:var(--floral-white);border:1px solid var(--border);border-radius:12px;margin-top:24px}.first-plan-finish .actions{margin-top:16px;flex-wrap:wrap;justify-content:flex-start}.first-plan-finish p{margin:8px 0}@media(max-width:767px){.first-plan-finish{padding:16px}.first-plan-finish .actions>*{width:100%}}
+
+/* Consent controls stay in document flow and never cover budget inputs. */
+.analytics-consent{max-width:1200px;margin:24px auto;padding:24px 32px;border-top:1px solid #e2e2eb;color:#1a1a57;background:#fbf6ee;font-size:16px}
+.analytics-consent h2{font-size:18px;font-weight:600;margin:0 0 8px}
+.analytics-consent p{max-width:72ch;margin:0 0 16px}
+.analytics-consent .actions{justify-content:flex-start;flex-wrap:wrap;gap:16px;margin:0 0 8px}
+.analytics-consent small{font-size:14px}
+@media(max-width:768px){.analytics-consent{padding:24px}}
+@media(max-width:480px){.analytics-consent{padding:16px}.analytics-consent .actions{gap:8px}}
