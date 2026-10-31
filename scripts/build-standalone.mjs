@@ -1,0 +1,13 @@
+import {build} from 'esbuild';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {resolve,dirname} from 'node:path';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const logo='data:image/png;base64,'+(await readFile(resolve(root,'public/tfc-logo.png'))).toString('base64');
+const result=await build({absWorkingDir:root,entryPoints:['app/main.tsx'],bundle:true,write:false,outfile:'standalone.js',format:'iife',platform:'browser',minify:true,jsx:'automatic',define:{'process.env.NODE_ENV':'"production"'},plugins:[{name:'embedded-logo',setup(b){b.onLoad({filter:/page\.tsx$/},async args=>({contents:(await readFile(args.path,'utf8')).replaceAll('/tfc-logo.png',logo),loader:'tsx'}));}}]});
+const js=result.outputFiles.find(f=>f.path.endsWith('.js')).text.replace(/<\/script/gi,'<\\/script');
+const css=result.outputFiles.find(f=>f.path.endsWith('.css'))?.text||'';
+const html=`<!doctype html><html lang="en-CA"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TFC Budget Lab</title><link rel="icon" href="${logo}"><style>${css}</style></head><body><div id="root"></div><script>${js}</script></body></html>`;
+await mkdir(resolve(root,'standalone'),{recursive:true});
+await writeFile(resolve(root,'standalone/TFC Budget Lab.html'),html);
+console.log('Created standalone/TFC Budget Lab.html — double-click to open.');
