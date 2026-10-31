@@ -26,7 +26,9 @@ function MoreInfo({title,children}:{title:string;children:ReactNode}){
  return <div className="inline-help"><button className="learn-more" popoverTarget={id} onClick={place} aria-label={'Learn more about '+title}>Learn more <span aria-hidden="true">ⓘ</span></button><div ref={panel} id={id} popover="auto" className="help-popover" style={position} role="region" aria-label={title}><strong>{title.charAt(0).toUpperCase()+title.slice(1)}</strong>{children}<button className="help-close" popoverTarget={id} popoverTargetAction="hide">Close explanation</button></div></div>;
 }
 function Amount({label,value,onChange,caption}:{label:string;value:number;onChange:(n:number)=>void;caption?:string}){
- return <label><span className="field-caption">{caption||label}</span><span className="money-input"><span>$</span><input aria-label={label} type="number" min="0" max="10000000" step="0.01" value={value} onChange={e=>onChange(Math.min(10000000,Math.max(0,Number(e.target.value))))}/></span></label>;
+ const [draft,setDraft]=useState<string|null>(null);
+ const formatted=new Intl.NumberFormat('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2,useGrouping:true}).format(value);
+ return <label><span className="field-caption">{caption||label}</span><span className="money-input"><span>$</span><input aria-label={label} type="text" inputMode="decimal" value={draft??formatted} onFocus={()=>setDraft(String(value))} onBlur={()=>setDraft(null)} onChange={e=>{const raw=e.target.value.replace(/,/g,'');if(!/^\d*(\.\d{0,2})?$/.test(raw))return;const amount=Number(raw||0);if(!Number.isFinite(amount))return;const capped=Math.min(10000000,amount);setDraft(amount>10000000?String(capped):raw);onChange(capped);}}/></span></label>;
 }
 function Confirm({title,children,onClose,onConfirm,action}:{title:string;children:ReactNode;onClose:()=>void;onConfirm:()=>void;action:string}){
  const ref=useRef<HTMLDialogElement>(null);
