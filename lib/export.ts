@@ -1,6 +1,6 @@
 import ExcelJS from 'exceljs';
 import {addBudgetTemplate} from './budget-template.ts';
-import {analyse,type Budget,type Log} from './budget.ts';
+import {analyse,money,type Budget,type Log} from './budget.ts';
 export async function workbook(original:Budget,revised:Budget,events:Log[],trades:Log[],reflection:string){
  const book=new ExcelJS.Workbook();book.creator='Teen Finance Club';book.subject='TFC Budget Lab budget planner';
  book.calcProperties.fullCalcOnLoad=true;
@@ -10,8 +10,8 @@ export async function workbook(original:Budget,revised:Budget,events:Log[],trade
  // Keep the learner's context with their revised plan, without extra tabs.
  const note=(title:string,text:string)=>{const row=revisedSheet.addRow([title,null,null,null,text]);row.height=Math.max(32,Math.ceil(text.length/45)*15);row.getCell(1).font={bold:true,color:{argb:'FF1A1A57'}};row.eachCell(c=>{c.alignment={vertical:'top',wrapText:true};});};
  if(events.length||trades.length||reflection)revisedSheet.addRow([]);
- events.forEach(e=>note('Surprise · '+e.name,`${e.date} · CA$${e.amount.toFixed(2)} · ${e.detail}`));
- trades.forEach(t=>note('Choice · '+t.name,`${t.date} · CA$${t.amount.toFixed(2)} · ${t.detail}`));
+ events.forEach(e=>note('Surprise · '+e.name,`${e.date} · CA${money(e.amount)} · ${e.detail}`));
+ trades.forEach(t=>note('Choice · '+t.name,`${t.date} · CA${money(t.amount)} · ${t.detail}`));
  if(reflection)note('What did you change, and why?',reflection);
  const cash=book.addWorksheet('Cashflow');
  cash.columns=[{width:16},{width:16},{width:18},{width:48},{width:20},{width:22},{width:18}];
